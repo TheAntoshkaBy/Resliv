@@ -43,8 +43,8 @@ public class CityController {
             @PathVariable("id") City cityFromDb,
             @RequestBody City city
     ) {
-        logger.info( "Received city: " + city);
-        logger.info( "Mutable city: " + cityFromDb);
+        logger.info("Received city: " + city);
+        logger.info("Mutable city: " + cityFromDb);
         BeanUtils.copyProperties(city, cityFromDb, "id");
         return cityRepository.save(cityFromDb);
     }

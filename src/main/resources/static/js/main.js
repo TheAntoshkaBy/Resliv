@@ -1,6 +1,5 @@
-
 function getIndex(list, id) {
-    for (var i = 0; i < list.length; i++ ) {
+    for (var i = 0; i < list.length; i++) {
         if (list[i].id === id) {
             return i;
         }
@@ -21,7 +20,7 @@ Vue.component('cities-form', {
         }
     },
     watch: {
-        cityAttr: function(newVal, oldVal) {
+        cityAttr: function (newVal, oldVal) {
             this.name = newVal.name;
             this.description = newVal.description;
             this.id = newVal.id;
@@ -49,7 +48,7 @@ Vue.component('cities-form', {
                 name: this.name,
                 description: this.description
             };
-            if(this.id){
+            if (this.id) {
                 cityApi.update({id: this.id}, city).then(result =>
                     result.json().then(data => {
                         var index = getIndex(this.cities, data.id);
@@ -59,7 +58,7 @@ Vue.component('cities-form', {
                         this.description = ''
                     })
                 )
-            }else {
+            } else {
                 cityApi.save({}, city).then(res => res.json().then(data => {
                     this.cities.push(data)
                     this.name = ''
@@ -72,26 +71,26 @@ Vue.component('cities-form', {
     }
 })
 
-Vue.component('city-row',{
+Vue.component('city-row', {
     props: ['city', 'editCity', 'cities'],
     template:
-    '<div class="col mb-8">'                                                    +
-        '<div class="card" style="width: 18rem;">\n'                            +
-        '  <div class="card-body">\n'                                           +
-        '    <h5 class="card-title"><i>({{city.id}}) </i>{{city.name}}</h5>\n'  +
-        '    <p class="card-text">{{city.description}}</p>\n'                   +
-        ' <input type="button" class="btn btn-primary"              '            +
-        ' @click="edit" value="Edit"/>'                                         +
-        ' <input type="button" class="btn btn-primary"              '            +
-        ' @click="del" value="Delete"/>'                                     +
-        '  </div>\n'                                                            +
-        '</div>'                                                                +
-    '</div>',
+        '<div class="col mb-8">' +
+        '<div class="card" style="width: 18rem;">\n' +
+        '  <div class="card-body">\n' +
+        '    <h5 class="card-title"><i>({{city.id}}) </i>{{city.name}}</h5>\n' +
+        '    <p class="card-text">{{city.description}}</p>\n' +
+        ' <input type="button" class="btn btn-primary"              ' +
+        ' @click="edit" value="Edit"/>' +
+        ' <input type="button" class="btn btn-primary"              ' +
+        ' @click="del" value="Delete"/>' +
+        '  </div>\n' +
+        '</div>' +
+        '</div>',
     methods: {
         edit: function () {
             this.editCity(this.city)
         },
-        del: function() {
+        del: function () {
             cityApi.remove({id: this.city.id}).then(result => {
                 if (result.ok) {
                     this.cities.splice(this.cities.indexOf(this.city), 1)
@@ -102,28 +101,28 @@ Vue.component('city-row',{
     }
 })
 
-Vue.component('cities-list',{
-    props:['cities'],
+Vue.component('cities-list', {
+    props: ['cities'],
     data: function () {
         return {
             city: null
         }
     },
     template:
-            '<div>'                                                                         +
-                '   <div>'                                                                  +
-                        '<cities-form :cities="cities" :cityAttr="city"/>'                                   +
-                    '</div>'                                                                +
-                    '<div class="row row-cols-2 row-cols-md-4">'                            +
-                        '<city-row v-for="city in cities" :key="city.id" :city="city" :editCity="editCity" :cities="cities"/>'    +
-                    '</div>'                                                                +
-             '</div>',
-    created: function() {
-            cityApi.get().then(result =>
-                result.json().then(data =>
-                    data.forEach(city => this.cities.push(city))
-                )
+        '<div>' +
+        '   <div>' +
+        '<cities-form :cities="cities" :cityAttr="city"/>' +
+        '</div>' +
+        '<div class="row row-cols-2 row-cols-md-4">' +
+        '<city-row v-for="city in cities" :key="city.id" :city="city" :editCity="editCity" :cities="cities"/>' +
+        '</div>' +
+        '</div>',
+    created: function () {
+        cityApi.get().then(result =>
+            result.json().then(data =>
+                data.forEach(city => this.cities.push(city))
             )
+        )
 
     },
     methods: {
@@ -137,6 +136,6 @@ var app = new Vue({
     el: '#app',
     template: '<cities-list :cities="cities"/>',
     data: {
-        cities:[]
+        cities: []
     }
 })
